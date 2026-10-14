@@ -6,7 +6,7 @@
     <title>SmartBroiler Edu - X AT</title>
     <style>
         :root { --primary: #047857; --secondary: #d1fae5; --bg: #f3f4f6; --text: #1f2937; --warning: #f59e0b; --danger: #ef4444; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; padding-bottom: 70px; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; padding-bottom: 70px; line-height: 1.5; }
         header { background-color: var(--primary); color: white; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .container { padding: 15px; }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; }
@@ -18,8 +18,9 @@
         .card { border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--primary); overflow: hidden;}
         .card-header { background: var(--secondary); padding: 10px 15px; font-weight: bold; color: var(--primary); font-size: 18px;}
         .card-body { padding: 15px; }
-        .analogi-box { background: #eff6ff; padding: 10px; border-radius: 6px; border-left: 4px solid #3b82f6; margin: 10px 0; font-size: 14px;}
-        .kasus-box { background: #fef2f2; padding: 10px; border-radius: 6px; border-left: 4px solid var(--danger); margin: 10px 0; font-size: 14px;}
+        .card-body p { margin-top: 0; }
+        .analogi-box { background: #eff6ff; padding: 12px; border-radius: 6px; border-left: 4px solid #3b82f6; margin: 12px 0; font-size: 14px;}
+        .kasus-box { background: #fef2f2; padding: 12px; border-radius: 6px; border-left: 4px solid var(--danger); margin: 12px 0; font-size: 14px;}
         
         .misi-box { background: #fffbeb; padding: 15px; border-radius: 8px; border: 1px solid #fde68a; margin-bottom: 15px; text-align: center;}
         .btn-misi { padding:10px 20px; border-radius:8px; border:none; background:var(--primary); color:white; font-weight:bold; width:100%; cursor:pointer; font-size: 15px;}
@@ -60,12 +61,48 @@
 
     <div class="container">
         
-        <!-- MENU MATERI (Teori) -->
+        <!-- MENU MATERI (Teori Lengkap dan Diksi Ala Anak SMK) -->
         <div id="materi" class="content-section active">
             <h2 style="text-align: center; color: var(--primary);">📚 Ruang Teori</h2>
-            <div class="card"><div class="card-header">1. Digitalisasi & IoT di Kandang</div><div class="card-body"><p>Internet of Things (IoT) memungkinkan benda mati dihubungkan ke internet.</p><div class="analogi-box"><b>🧠 Analogi:</b> Menyalakan TV dari HP.</div><div class="kasus-box"><b>🐔 Kasus Nyata:</b> Memantau sensor Suhu (DHT11) dan Amonia lewat HP.</div></div></div>
-            <div class="card"><div class="card-header">2. Logika Otomasi (IF-THEN)</div><div class="card-body"><p>Otak sistem kandang (Temptron) bekerja dengan alur IF-THEN (JIKA-MAKA).</p><div class="analogi-box"><b>🧠 Analogi:</b> JIKA mendung, MAKA angkat jemuran.</div><div class="kasus-box"><b>🐔 Kasus Nyata:</b> JIKA suhu > 30°C, MAKA nyalakan Kipas Exhaust maksimal.</div></div></div>
-            <div class="card"><div class="card-header">3. Visualisasi Data (Grafik)</div><div class="card-body"><p>Membaca grafik garis suhu harian untuk menemukan kejanggalan (anomali).</p><div class="analogi-box"><b>🧠 Analogi:</b> Membaca grafik detak jantung atau nilai ujian.</div><div class="kasus-box"><b>🐔 Kasus Nyata:</b> Anomali penurunan suhu di malam hari menandakan pemanas mati. Bahaya!</div></div></div>
+            
+            <div class="card">
+                <div class="card-header">1. Digitalisasi & IoT di Kandang</div>
+                <div class="card-body">
+                    <p><b>Internet of Things (IoT)</b> itu ibarat memberi "nyawa internet" ke benda-benda mati di sekitar kita, sehingga benda tersebut bisa saling ngobrol dan membagikan data langsung ke HP kita dari jarak jauh.</p>
+                    <div class="analogi-box">
+                        <b>🧠 Analogi Mudah:</b> Bayangkan zaman dulu kalau mau menyalakan TV, kita harus jalan maju ke depan layar untuk pencet tombol. Terus ada <i>remote control</i>, tapi harus diarahkan ke TV dari jarak dekat. Nah, dengan IoT, kalian bisa mematikan TV di ruang tamu rumah pakai HP, padahal kalian sedang asyik nongkrong di sekolah! Ini karena benda (TV) itu sudah terhubung langsung ke internet.
+                    </div>
+                    <div class="kasus-box">
+                        <b>🐔 Kasus Nyata Peternakan:</b> Di dalam kandang <i>closed-house</i> modern, peternak memasang alat sensor pintar. Ada sensor <b>DHT11</b> (untuk membaca suhu dan kelembapan udara) dan sensor gas <b>Amonia</b> (untuk mencium bau kotoran ayam). Sensor-sensor ini mengirim data ke internet setiap detik. Jadi, peternak cukup rebahan sambil buka HP di rumah untuk memantau apakah ayamnya kepanasan atau udara kandang sudah terlalu bau.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">2. Logika Otomasi (IF-THEN)</div>
+                <div class="card-body">
+                    <p>Kandang pintar butuh "otak" pengatur yang disebut mikrokontroler (contoh alatnya: panel suhu merek <i>Temptron</i>). Otak mesin ini tidak sepintar manusia, dia hanya mengerti perintah sederhana dan kaku yang disebut dengan logika <b>IF-THEN (JIKA-MAKA)</b>.</p>
+                    <div class="analogi-box">
+                        <b>🧠 Analogi Mudah:</b> Logika ini mirip seperti kebiasaan kita sehari-hari. <b>JIKA</b> cuaca mendung gelap (ini adalah <i>Input/Kondisi</i>), <b>MAKA</b> kalian akan lari keluar mengangkat jemuran pakaian (ini adalah <i>Output/Tindakan</i>). Nah, mesin di kandang juga diajari cara berpikir otomatis seperti ini lewat sebuah program diagram alur (Flowchart).
+                    </div>
+                    <div class="kasus-box">
+                        <b>🐔 Kasus Nyata Peternakan:</b> Kita memasukkan perintah (program) ke mesin panel kandang: <b>JIKA</b> sensor membaca suhu kandang naik terlalu panas (di atas 30°C), <b>MAKA</b> mesin akan otomatis menyalakan <i>Exhaust Fan</i> (kipas besar penyedot debu/panas) dan menghidupkan pompa air pendingin. Kipas itu akan terus menyala sampai suhunya turun jadi sejuk lagi di angka 28°C. Ayam pun bebas dari bahaya <i>heat stress</i> (stres panas)!
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">3. Visualisasi Data (Membaca Grafik)</div>
+                <div class="card-body">
+                    <p>Alat sensor di kandang itu mengirim angka ratusan kali setiap jamnya. Angka-angka ini bakal bikin pusing kalau cuma dibaca dari tabel Excel. Makanya, data tersebut diubah wujudnya menjadi <b>Grafik Garis (Visualisasi)</b> supaya kita gampang melihat pergerakannya.</p>
+                    <div class="analogi-box">
+                        <b>🧠 Analogi Mudah:</b> Kalian pernah lihat monitor grafik denyut jantung di rumah sakit? Atau grafik nilai rapor dari SD sampai SMK? Dari garis yang naik-turun itu, kita bisa langsung menebak dengan cepat, apakah nilainya lagi stabil, naik tajam, atau malah anjlok perlahan.
+                    </div>
+                    <div class="kasus-box">
+                        <b>🐔 Kasus Nyata Peternakan:</b> Seorang peternak bangun pagi dan mengecek grafik suhu kandang di HP-nya. Lho, ternyata di grafik ada <b>anomali (kejanggalan)</b>! Garis suhu tiba-tiba anjlok sangat tajam ke bawah tepat pada jam 02:00 dini hari dan menyentuh angka 22°C (sangat dingin). Ini tanda bahaya! Berarti semalam pemanasnya mati atau ada tirai kandang yang jebol kena angin. Kalau peternak tidak pintar membaca grafik ini, anak ayam bisa bergerombol numpuk kedinginan (<i>huddling</i>) dan berujung kematian massal tanpa ketahuan.
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- MENU SIMULASI (Area Interaktif) -->
