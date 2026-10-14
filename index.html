@@ -6,50 +6,74 @@
     <title>SmartBroiler Edu - X AT</title>
     <style>
         :root { --primary: #047857; --secondary: #d1fae5; --bg: #f3f4f6; --text: #1f2937; --warning: #f59e0b; --danger: #ef4444; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; padding-bottom: 70px; line-height: 1.5; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; padding-bottom: 70px; line-height: 1.6; }
         header { background-color: var(--primary); color: white; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .container { padding: 15px; }
+        
+        /* Navigasi Bawah */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; }
         .nav-item { text-align: center; font-size: 14px; font-weight: bold; color: gray; cursor: pointer; padding: 5px 15px; border-radius: 20px; transition: 0.3s;}
         .nav-item.active { background: var(--secondary); color: var(--primary); }
+        
+        /* Kontainer Utama */
         .content-section { display: none; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px;}
         .content-section.active { display: block; }
         
-        .card { border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--primary); overflow: hidden;}
-        .card-header { background: var(--secondary); padding: 10px 15px; font-weight: bold; color: var(--primary); font-size: 18px;}
-        .card-body { padding: 15px; }
-        .card-body p { margin-top: 0; }
-        .analogi-box { background: #eff6ff; padding: 12px; border-radius: 6px; border-left: 4px solid #3b82f6; margin: 12px 0; font-size: 14px;}
-        .kasus-box { background: #fef2f2; padding: 12px; border-radius: 6px; border-left: 4px solid var(--danger); margin: 12px 0; font-size: 14px;}
+        /* Desain Modul Materi */
+        .card { border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 25px; border-left: 6px solid var(--primary); overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+        .card-header { background: var(--secondary); padding: 15px; font-weight: bold; color: var(--primary); font-size: 20px; border-bottom: 1px solid #a7f3d0;}
+        .card-body { padding: 20px; }
+        .card-body p { margin-top: 0; margin-bottom: 15px; text-align: justify;}
+        .card-body h4 { color: var(--primary); margin-bottom: 10px; margin-top: 25px; border-bottom: 2px solid #e5e7eb; padding-bottom: 5px;}
+        .card-body ul { margin-top: 0; padding-left: 20px; margin-bottom: 15px; }
+        .card-body li { margin-bottom: 8px; }
         
-        .misi-box { background: #fffbeb; padding: 15px; border-radius: 8px; border: 1px solid #fde68a; margin-bottom: 15px; text-align: center;}
-        .btn-misi { padding:10px 20px; border-radius:8px; border:none; background:var(--primary); color:white; font-weight:bold; width:100%; cursor:pointer; font-size: 15px;}
+        .analogi-box { background: #eff6ff; padding: 15px; border-radius: 8px; border-left: 5px solid #3b82f6; margin: 15px 0; font-size: 14px;}
+        .kasus-box { background: #fef2f2; padding: 15px; border-radius: 8px; border-left: 5px solid var(--danger); margin: 15px 0; font-size: 14px;}
+        .highlight-text { background-color: #fef08a; padding: 2px 5px; border-radius: 3px; font-weight: bold; color: #854d0e; }
+        
+        /* Simulasi & Misi */
+        .misi-box { background: #fffbeb; padding: 20px; border-radius: 8px; border: 1px solid #fde68a; margin-bottom: 20px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+        .misi-box h4 { margin-top: 0; color: #d97706; font-size: 18px; margin-bottom: 10px;}
+        .btn-misi { padding:12px 20px; border-radius:8px; border:none; background:var(--primary); color:white; font-weight:bold; width:100%; cursor:pointer; font-size: 16px; transition: 0.3s;}
+        .btn-misi:hover { opacity: 0.9; }
         .btn-misi.done { background: #10b981; pointer-events: none; }
         
-        .simulasi-area { display: none; background: #1f2937; color: white; padding: 20px; border-radius: 10px; text-align: center; }
-        .btn-kembali { background: #4b5563; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-bottom: 15px; }
+        .simulasi-area { display: none; background: #1f2937; color: white; padding: 20px; border-radius: 10px; text-align: center; margin-top: 15px;}
+        .btn-kembali { background: #4b5563; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; margin-bottom: 15px; font-weight: bold; transition: 0.3s;}
         
-        .kandang-virtual { height: 150px; background: #4ade80; border-radius: 10px; position: relative; margin: 20px 0; border: 4px solid #22c55e;}
-        .sensor-item { background: white; color: black; padding: 5px 10px; border-radius: 20px; display: inline-block; margin: 5px; cursor: pointer; font-size: 14px; font-weight: bold; border: 2px solid var(--primary);}
-        #hp-layar { display: none; background: #e5e7eb; color: #111827; width: 150px; margin: 10px auto; border-radius: 15px; padding: 15px; border: 8px solid #374151; font-weight: bold;}
+        /* Simulasi 1 */
+        .kandang-virtual { height: 180px; background: #4ade80; border-radius: 10px; position: relative; margin: 20px 0; border: 5px solid #22c55e;}
+        .sensor-item { background: white; color: black; padding: 8px 12px; border-radius: 20px; display: inline-block; margin: 5px; cursor: pointer; font-size: 14px; font-weight: bold; border: 2px solid var(--primary); transition: 0.3s;}
+        .sensor-item:active { transform: scale(0.95); }
+        #hp-layar { display: none; background: #e5e7eb; color: #111827; width: 180px; margin: 15px auto; border-radius: 20px; padding: 15px; border: 10px solid #374151; font-weight: bold; box-shadow: 0 10px 15px rgba(0,0,0,0.3);}
         
-        .logic-container { background: white; padding: 15px; border-radius: 8px; color: black; text-align: left;}
-        .logic-select { padding: 8px; border-radius: 5px; border: 2px solid var(--primary); font-weight: bold; width: 100%; margin: 5px 0;}
+        /* Simulasi 2 */
+        .logic-container { background: white; padding: 20px; border-radius: 8px; color: black; text-align: left;}
+        .logic-select { padding: 10px; border-radius: 5px; border: 2px solid var(--primary); font-weight: bold; width: 100%; margin: 5px 0 15px 0; font-size: 14px;}
         
-        .chart-container { background: white; border-radius: 8px; padding: 10px; position: relative; height: 200px; }
-        .titik-grafik { width: 20px; height: 20px; background: var(--primary); border-radius: 50%; position: absolute; cursor: pointer; transform: translate(-50%, -50%); transition: 0.2s;}
-        .titik-grafik:hover { transform: scale(1.5) translate(-30%, -30%); }
-        .titik-anomali { background: var(--danger); width: 25px; height: 25px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
+        /* Simulasi 3 */
+        .chart-container { background: white; border-radius: 8px; padding: 10px; position: relative; height: 220px; border: 1px solid #ccc; }
+        .titik-grafik { width: 22px; height: 22px; background: var(--primary); border-radius: 50%; position: absolute; cursor: pointer; transform: translate(-50%, -50%); transition: 0.2s;}
+        .titik-grafik:hover { transform: scale(1.5) translate(-30%, -30%); box-shadow: 0 0 10px rgba(0,0,0,0.5);}
+        .titik-anomali { background: var(--danger); width: 28px; height: 28px; animation: pulse 1.2s infinite; }
+        @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);} 70% {box-shadow: 0 0 0 12px rgba(239, 68, 68, 0);} 100% {box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);} }
         
-        .form-group { margin-bottom: 20px; padding-bottom:15px; border-bottom: 1px solid #e5e7eb;}
-        .form-group label { display: block; font-weight: bold; margin-bottom: 8px; color:var(--primary); }
-        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; background: #fff;}
-        .file-upload-wrapper { background: var(--secondary); border: 2px dashed var(--primary); padding: 15px; text-align: center; border-radius: 8px; position: relative; cursor: pointer; margin-bottom:10px; }
+        /* Form Tugas */
+        .form-group { margin-bottom: 25px; padding-bottom:20px; border-bottom: 1px solid #e5e7eb;}
+        .form-group:last-child { border-bottom: none; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 10px; color:var(--primary); font-size: 16px;}
+        .form-group input[type="text"], .form-group select { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; box-sizing: border-box; background: #fff; font-size: 15px; outline: none;}
+        .form-group input:focus, .form-group select:focus { border-color: var(--primary); ring: 2px solid var(--secondary);}
+        .file-upload-wrapper { background: var(--secondary); border: 2px dashed var(--primary); padding: 20px; text-align: center; border-radius: 8px; position: relative; cursor: pointer; margin-bottom:15px; transition: 0.3s;}
+        .file-upload-wrapper:hover { background: #a7f3d0; }
+        .file-upload-wrapper span { font-weight: bold; color: var(--primary); font-size: 15px;}
         .file-upload-wrapper input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
-        .file-status { margin-top: 10px; font-size: 12px; color: var(--primary); font-weight: bold;}
-        button#btnSubmit { width: 100%; padding: 15px; background-color: var(--primary); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
-        button#btnSubmit:disabled { background-color: #9ca3af; cursor: not-allowed; }
+        .file-status { margin-top: 10px; font-size: 13px; color: #065f46; font-weight: bold; word-break: break-all;}
+        
+        button#btnSubmit { width: 100%; padding: 15px; background-color: var(--primary); color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.3s;}
+        button#btnSubmit:hover:not(:disabled) { background-color: #065f46; }
+        button#btnSubmit:disabled { background-color: #9ca3af; cursor: not-allowed; box-shadow: none;}
     </style>
 </head>
 <body>
@@ -61,45 +85,88 @@
 
     <div class="container">
         
-        <!-- MENU MATERI (Teori Lengkap dan Diksi Ala Anak SMK) -->
+        <!-- MENU MATERI (Teori Super Lengkap - PLF & IoT) -->
         <div id="materi" class="content-section active">
-            <h2 style="text-align: center; color: var(--primary);">📚 Ruang Teori</h2>
+            <h2 style="text-align: center; color: var(--primary); margin-top:0;">📚 Ruang Teori</h2>
+            <p style="text-align: center; font-size:14px; margin-bottom: 25px; color:gray;">Pelajari modul di bawah ini dengan saksama sebelum mulai praktik.</p>
             
+            <!-- MODUL 1 -->
             <div class="card">
-                <div class="card-header">1. Digitalisasi & IoT di Kandang</div>
+                <div class="card-header">1. Digitalisasi & IoT (Kandang Cerdas)</div>
                 <div class="card-body">
-                    <p><b>Internet of Things (IoT)</b> itu ibarat memberi "nyawa internet" ke benda-benda mati di sekitar kita, sehingga benda tersebut bisa saling ngobrol dan membagikan data langsung ke HP kita dari jarak jauh.</p>
+                    <p>Selamat datang di era <b>Precision Livestock Farming (PLF)</b> atau Peternakan Presisi! Saat ini, menjadi peternak bukan sekadar memberi makan dan membersihkan kotoran. Peternakan modern kelas industri sudah menggunakan teknologi <b>Internet of Things (IoT)</b>.</p>
+                    
+                    <p>IoT adalah teknologi yang memberi "nyawa internet" kepada benda-benda mati di sekitar kita. Dengan IoT, benda seperti kipas angin, pompa air, dan lampu di dalam kandang ayam dapat saling berkomunikasi, mengumpulkan data, dan membagikan informasi tersebut langsung ke <i>smartphone</i> kita dari jarak ratusan kilometer sekalipun.</p>
+                    
+                    <h4>Arsitektur Kandang IoT (Bagaimana Cara Kerjanya?)</h4>
+                    <p>Agar sebuah kandang ayam menjadi "cerdas", kita butuh 3 komponen utama yang bekerja seperti anatomi tubuh manusia:</p>
+                    <ul>
+                        <li><b>Sensor (Alat Indera):</b> Bertugas merasakan kondisi lingkungan. Contohnya sensor <i>DHT11/DHT22</i> untuk mendeteksi suhu panas dan kelembapan, sensor <i>MQ135</i> untuk mencium gas amonia kotoran, dan <i>Anemometer</i> untuk merasakan kecepatan angin kipas.</li>
+                        <li><b>Mikrokontroler (Otak):</b> Papan sirkuit seperti <i>NodeMCU ESP32</i> atau panel <i>Temptron</i> yang tugasnya menerima laporan dari sensor, berpikir, dan memutus sambungan ke internet (WiFi/GSM).</li>
+                        <li><b>Cloud & Aplikasi (Layar Laporan):</b> Data dari kandang terbang ke awan (<i>Google Sheets/Database</i>) lalu ditampilkan dalam bentuk angka atau grafik cantik di layar HP peternak.</li>
+                    </ul>
+
                     <div class="analogi-box">
-                        <b>🧠 Analogi Mudah:</b> Bayangkan zaman dulu kalau mau menyalakan TV, kita harus jalan maju ke depan layar untuk pencet tombol. Terus ada <i>remote control</i>, tapi harus diarahkan ke TV dari jarak dekat. Nah, dengan IoT, kalian bisa mematikan TV di ruang tamu rumah pakai HP, padahal kalian sedang asyik nongkrong di sekolah! Ini karena benda (TV) itu sudah terhubung langsung ke internet.
+                        <b>🧠 Analogi Mudah:</b> Bayangkan zaman dulu kalau mau menyalakan TV, kalian harus berjalan maju mendekati TV untuk menekan tombol. Kemudian, muncul inovasi <i>remote control</i>, namun remote tersebut tetap harus diarahkan tepat ke TV dari jarak dekat. Nah, dengan adanya IoT, kalian bisa <b>mematikan AC atau TV di ruang tamu pakai HP</b> padahal kalian sedang asyik belajar di kelas SMKN 2 Purbalingga! Ini terjadi karena benda tersebut telah terhubung ke jaringan internet.
                     </div>
+
                     <div class="kasus-box">
-                        <b>🐔 Kasus Nyata Peternakan:</b> Di dalam kandang <i>closed-house</i> modern, peternak memasang alat sensor pintar. Ada sensor <b>DHT11</b> (untuk membaca suhu dan kelembapan udara) dan sensor gas <b>Amonia</b> (untuk mencium bau kotoran ayam). Sensor-sensor ini mengirim data ke internet setiap detik. Jadi, peternak cukup rebahan sambil buka HP di rumah untuk memantau apakah ayamnya kepanasan atau udara kandang sudah terlalu bau.
+                        <b>🐔 Kasus Nyata Peternakan:</b> Di dalam kandang <i>closed-house</i>, peternak tidak perlu bolak-balik masuk kandang hanya untuk mengecek termometer raksa yang ditempel di dinding. Tubuh manusia membawa bakteri dan membuat ayam stres. Dengan IoT, peternak cukup membuka layar aplikasi (Dashboard) sambil ngopi di rumah untuk memastikan ayam broiler/KUB miliknya berada di zona nyaman.
                     </div>
                 </div>
             </div>
 
+            <!-- MODUL 2 -->
             <div class="card">
-                <div class="card-header">2. Logika Otomasi (IF-THEN)</div>
+                <div class="card-header">2. Logika Otomasi (Mikrokontroler & Aktuator)</div>
                 <div class="card-body">
-                    <p>Kandang pintar butuh "otak" pengatur yang disebut mikrokontroler (contoh alatnya: panel suhu merek <i>Temptron</i>). Otak mesin ini tidak sepintar manusia, dia hanya mengerti perintah sederhana dan kaku yang disebut dengan logika <b>IF-THEN (JIKA-MAKA)</b>.</p>
+                    <p>Sebuah kandang pintar butuh "otak" pengatur. Di lapangan, alat ini dikenal dengan sebutan <i>Climate Controller</i> (Panel Pengendali Iklim), contoh merek yang terkenal adalah <b>Temptron 304D, 607, atau 608</b>.</p>
+                    
+                    <p>Meskipun disebut otak, mesin mikrokontroler ini sebenarnya tidak memiliki perasaan dan tidak sepintar manusia. Dia butuh diajari cara berpikir yang sangat kaku, detail, dan berurutan. Cara berpikir inilah yang kita sebut dengan pemrograman logika <b>IF-THEN (JIKA-MAKA)</b>.</p>
+                    
+                    <h4>Mengenal Aktuator (Si Pekerja Keras)</h4>
+                    <p>Jika sensor adalah mata dan hidung, maka <b>Aktuator</b> adalah tangan dan kakinya. Aktuator adalah alat berat yang bertugas mengeksekusi perintah dari otak (mikrokontroler). Contoh aktuator di kandang adalah:</p>
+                    <ul>
+                        <li><b>Exhaust Fan (Blower):</b> Kipas raksasa penyedot debu, gas amonia, dan hawa panas dari dalam ke luar kandang.</li>
+                        <li><b>Cooling Pad Pump:</b> Pompa air yang membasahi bantalan pendingin selulosa. Udara luar yang masuk melewati bantalan basah ini akan berubah menjadi sejuk (seperti AC raksasa).</li>
+                        <li><b>Brooder (Pemanas):</b> Pemanas gas/batu bara yang menyala untuk menghangatkan DOC (anak ayam) saat cuaca dingin ekstrem.</li>
+                    </ul>
+
                     <div class="analogi-box">
-                        <b>🧠 Analogi Mudah:</b> Logika ini mirip seperti kebiasaan kita sehari-hari. <b>JIKA</b> cuaca mendung gelap (ini adalah <i>Input/Kondisi</i>), <b>MAKA</b> kalian akan lari keluar mengangkat jemuran pakaian (ini adalah <i>Output/Tindakan</i>). Nah, mesin di kandang juga diajari cara berpikir otomatis seperti ini lewat sebuah program diagram alur (Flowchart).
+                        <b>🧠 Analogi Mudah:</b> Logika IF-THEN persis seperti refleks kalian sehari-hari. <b>JIKA</b> cuaca tiba-tiba mendung gelap dan ada petir (ini adalah <i>Input/Kondisi dari sensor mata</i>), <b>MAKA</b> kalian akan berlari keluar mengangkat jemuran pakaian (ini adalah <i>Output/Tindakan aktuator otot</i>). Mikrokontroler di kandang juga diajari lewat diagram alur (Flowchart) seperti ini.
                     </div>
+
                     <div class="kasus-box">
-                        <b>🐔 Kasus Nyata Peternakan:</b> Kita memasukkan perintah (program) ke mesin panel kandang: <b>JIKA</b> sensor membaca suhu kandang naik terlalu panas (di atas 30°C), <b>MAKA</b> mesin akan otomatis menyalakan <i>Exhaust Fan</i> (kipas besar penyedot debu/panas) dan menghidupkan pompa air pendingin. Kipas itu akan terus menyala sampai suhunya turun jadi sejuk lagi di angka 28°C. Ayam pun bebas dari bahaya <i>heat stress</i> (stres panas)!
+                        <b>🐔 Kasus Nyata Peternakan:</b> Peternak membuat program logika bersarang (<i>Nested IF</i>) untuk ayam besarnya: <br><br>
+                        <b>JIKA</b> sensor membaca suhu > 30°C <span class="highlight-text">DAN</span> kelembapan udara > 80%<br>
+                        <b>MAKA</b> mesin akan otomatis menyalakan <i>Exhaust Fan</i> secara maksimal <span class="highlight-text">TETAPI</span> mematikan pompa <i>Cooling Pad</i> (karena air membuat kelembapan semakin parah). Kipas akan terus menyedot hawa panas sampai suhu turun di angka 28°C. Otomatisasi cerdas ini menyelamatkan ratusan ayam dari serangan kematian akibat <b>Heat Stress (Cekaman Panas)</b>!
                     </div>
                 </div>
             </div>
 
+            <!-- MODUL 3 -->
             <div class="card">
-                <div class="card-header">3. Visualisasi Data (Membaca Grafik)</div>
+                <div class="card-header">3. Visualisasi Data & Detektif Kandang</div>
                 <div class="card-body">
-                    <p>Alat sensor di kandang itu mengirim angka ratusan kali setiap jamnya. Angka-angka ini bakal bikin pusing kalau cuma dibaca dari tabel Excel. Makanya, data tersebut diubah wujudnya menjadi <b>Grafik Garis (Visualisasi)</b> supaya kita gampang melihat pergerakannya.</p>
+                    <p>Dalam dunia industri modern ada istilah <i>"Data is the new oil"</i> (Data adalah minyak baru). Alat sensor IoT di kandang memproduksi ribuan angka data suhu, kelembapan, kecepatan angin, dan konsumsi pakan setiap harinya.</p>
+                    
+                    <p>Membaca deretan angka yang ribuan baris dari tabel Excel sangatlah membingungkan dan membuat mata lelah. Oleh karena itu, peternak yang cerdas wajib memiliki keahlian mengubah data mentah menjadi <b>Visualisasi Grafik</b> (seperti Grafik Garis atau <i>Line Chart</i>).</p>
+
+                    <h4>Manfaat Membaca Grafik</h4>
+                    <p>Dengan grafik garis (sumbu X untuk Waktu/Jam, dan sumbu Y untuk Suhu/Angka), peternak bisa melakukan hal-hal ajaib berikut:</p>
+                    <ul>
+                        <li><b>Analisis Tren:</b> Melihat apakah suhu kandang secara keseluruhan dari hari ke hari makin panas (mungkin kipas kotor dan butuh dibersihkan).</li>
+                        <li><b>Deteksi Dini Penyakit:</b> Jika peternak melihat grafik konsumsi air minum ayam tiba-tiba <span style="color:var(--danger); font-weight:bold;">anjlok ke bawah</span> padahal cuaca sedang panas, ini adalah sinyal darurat bahwa 1-2 hari lagi gejala penyakit (seperti senot/CRD atau snot) akan meledak! Ayam yang sakit malas minum.</li>
+                        <li><b>Pencarian Anomali:</b> Mencari titik aneh yang tidak wajar di luar jam normal.</li>
+                    </ul>
+
                     <div class="analogi-box">
-                        <b>🧠 Analogi Mudah:</b> Kalian pernah lihat monitor grafik denyut jantung di rumah sakit? Atau grafik nilai rapor dari SD sampai SMK? Dari garis yang naik-turun itu, kita bisa langsung menebak dengan cepat, apakah nilainya lagi stabil, naik tajam, atau malah anjlok perlahan.
+                        <b>🧠 Analogi Mudah:</b> Pernahkah kalian melihat layar monitor EKG (grafik denyut jantung) di rumah sakit? Atau grafik perkembangan nilai rapor dari awal masuk SMK sampai sekarang? Hanya dengan melihat garis yang bergerak naik atau turun secara visual, otak manusia bisa memproses kesimpulan jauh lebih cepat daripada harus membaca angka satu-persatu di buku catatan.
                     </div>
+
                     <div class="kasus-box">
-                        <b>🐔 Kasus Nyata Peternakan:</b> Seorang peternak bangun pagi dan mengecek grafik suhu kandang di HP-nya. Lho, ternyata di grafik ada <b>anomali (kejanggalan)</b>! Garis suhu tiba-tiba anjlok sangat tajam ke bawah tepat pada jam 02:00 dini hari dan menyentuh angka 22°C (sangat dingin). Ini tanda bahaya! Berarti semalam pemanasnya mati atau ada tirai kandang yang jebol kena angin. Kalau peternak tidak pintar membaca grafik ini, anak ayam bisa bergerombol numpuk kedinginan (<i>huddling</i>) dan berujung kematian massal tanpa ketahuan.
+                        <b>🐔 Kasus Nyata Peternakan:</b> Peternak agribisnis terbangun di pagi hari, menyeruput kopi, dan mengecek grafik suhu semalaman di layar HP-nya. Betapa kagetnya ia saat menemukan ada <b>anomali tajam</b>. Garis suhu yang stabil di angka 32°C (suhu ideal untuk anak ayam/DOC), tiba-tiba jatuh menukik ekstrem ke angka 22°C tepat pada jam 02:00 dini hari!<br><br> 
+                        Ini adalah bukti sejarah digital yang tidak bisa dibantah. Artinya, tabung gas pemanas (brooder) habis atau ada tirai kandang yang jebol ditiup angin badai semalam. Jika peternak abai terhadap anomali grafik ini, anak-anak ayam pasti sudah saling bertumpukan mencari kehangatan (<b>Huddling</b>). Ayam yang berada di tumpukan paling bawah akan mati lemas terinjak dan kurang oksigen.
                     </div>
                 </div>
             </div>
@@ -107,243 +174,509 @@
 
         <!-- MENU SIMULASI (Area Interaktif) -->
         <div id="simulasi" class="content-section">
-            <h2 style="text-align: center; color: var(--primary);">🎮 Misi Praktik Virtual</h2>
-            <p style="text-align: center; font-size:14px;">Klik Mulai untuk simulasi. <b>Wajib screenshot</b> setiap misi yang sudah 'Selesai!'.</p>
+            <h2 style="text-align: center; color: var(--primary); margin-top:0;">🎮 Misi Praktik Virtual</h2>
+            <p style="text-align: center; font-size:15px; margin-bottom:20px; color:gray;">Selesaikan semua permainan simulasi di bawah ini! <b>Wajib screenshot layar HP kalian</b> setiap kali ada kotak hijau bertuliskan "Selesai!".</p>
             
             <div id="misi-list">
-                <div class="misi-box"><h4>Misi 1: Instalasi IoT Kandang</h4><button class="btn-misi" id="btn-misi-1" onclick="bukaSimulasi('sim1')">🚀 Mulai Misi 1</button></div>
-                <div class="misi-box"><h4>Misi 2: Logika IF-THEN</h4><button class="btn-misi" id="btn-misi-2" onclick="bukaSimulasi('sim2')">🚀 Mulai Misi 2</button></div>
-                <div class="misi-box"><h4>Misi 3: Detektif Anomali Data</h4><button class="btn-misi" id="btn-misi-3" onclick="bukaSimulasi('sim3')">🚀 Mulai Misi 3</button></div>
+                <div class="misi-box">
+                    <h4>Misi 1: Teknisi IoT Handal</h4>
+                    <p style="font-size:14px; margin-bottom:15px;">Simulasi perakitan sensor di dalam kandang dan sinkronisasi data ke aplikasi *smartphone* secara nirkabel.</p>
+                    <button class="btn-misi" id="btn-misi-1" onclick="bukaSimulasi('sim1')">🚀 Mulai Simulasi Misi 1</button>
+                </div>
+                <div class="misi-box">
+                    <h4>Misi 2: Programmer Suhu Kandang</h4>
+                    <p style="font-size:14px; margin-bottom:15px;">Uji kejelian kalian dalam menyusun algoritma IF-THEN untuk menyelamatkan ayam dari bahaya *heat stress*.</p>
+                    <button class="btn-misi" id="btn-misi-2" onclick="bukaSimulasi('sim2')">🚀 Mulai Simulasi Misi 2</button>
+                </div>
+                <div class="misi-box">
+                    <h4>Misi 3: Detektif Anomali Data</h4>
+                    <p style="font-size:14px; margin-bottom:15px;">Baca grafik garis, temukan jam terjadinya kejanggalan suhu semalam yang membuat ayam kedinginan.</p>
+                    <button class="btn-misi" id="btn-misi-3" onclick="bukaSimulasi('sim3')">🚀 Mulai Simulasi Misi 3</button>
+                </div>
             </div>
 
             <!-- SIMULASI 1 -->
             <div id="sim1" class="simulasi-area">
-                <button class="btn-kembali" onclick="tutupSimulasi()">⬅ Kembali</button>
-                <h3>🔧 Misi 1: Instalasi IoT Kandang</h3>
-                <div id="btn-pasang-suhu" class="sensor-item" onclick="pasangSensor('suhu')">🌡️ Pasang Sensor Suhu</div>
-                <div id="btn-pasang-amonia" class="sensor-item" onclick="pasangSensor('amonia')">💨 Pasang Sensor Amonia</div>
-                <div class="kandang-virtual" id="kandang-v"><p style="color:black; font-weight:bold; padding-top:10px;">Area Dalam Kandang</p><div id="sensor-suhu-in" style="display:none; position:absolute; top:40%; left:20%; font-size:20px;">🌡️ Suhu Aktif</div><div id="sensor-amonia-in" style="display:none; position:absolute; top:40%; right:20%; font-size:20px;">💨 Amonia Aktif</div></div>
-                <button id="btn-hubungkan" class="btn-misi" style="display:none; background:#3b82f6;" onclick="hubungkanHP()">📲 Hubungkan ke HP</button>
-                <div id="hp-layar"><p>Aplikasi SmartBroiler</p><hr><p style="color:green;">Suhu: 29°C (Aman)</p><p style="color:green;">Amonia: 15ppm (Aman)</p><button class="btn-misi" style="background:#10b981; padding:5px; font-size:12px; margin-top:10px;" onclick="selesaikanMisi(1)">Selesaikan Misi 1 (Silakan Screenshot)</button></div>
+                <button class="btn-kembali" onclick="tutupSimulasi()">⬅ Batal & Kembali ke Daftar Misi</button>
+                <h3 style="color:#6ee7b7; border-bottom:1px solid #4ade80; padding-bottom:10px;">🔧 Misi 1: Instalasi Hardware IoT</h3>
+                <p style="font-size: 15px;">Ketuk tombol sensor di bawah ini untuk mengaktifkannya di dalam kandang Closed-house milik sekolah.</p>
+                
+                <div id="btn-pasang-suhu" class="sensor-item" onclick="pasangSensor('suhu')">🌡️ Aktifkan Sensor Suhu DHT11</div>
+                <div id="btn-pasang-amonia" class="sensor-item" onclick="pasangSensor('amonia')">💨 Aktifkan Sensor Amonia MQ135</div>
+                
+                <div class="kandang-virtual" id="kandang-v">
+                    <p style="color:black; font-weight:bold; padding-top:10px; background:rgba(255,255,255,0.3); display:inline-block; padding:5px 15px; border-radius:20px;">[Area Indoor Kandang]</p>
+                    <div id="sensor-suhu-in" style="display:none; position:absolute; top:50%; left:10%; font-size:18px; background:white; padding:5px; border-radius:8px; color:black; font-weight:bold; box-shadow:0 4px 6px rgba(0,0,0,0.2);">🌡️ DHT11 Online</div>
+                    <div id="sensor-amonia-in" style="display:none; position:absolute; top:50%; right:10%; font-size:18px; background:white; padding:5px; border-radius:8px; color:black; font-weight:bold; box-shadow:0 4px 6px rgba(0,0,0,0.2);">💨 MQ135 Online</div>
+                </div>
+                
+                <p id="teks-tunggu-sensor" style="font-size:13px; color:yellow; margin:10px 0;">Menunggu semua sensor terpasang...</p>
+
+                <button id="btn-hubungkan" class="btn-misi" style="display:none; background:#3b82f6; font-size:18px;" onclick="hubungkanHP()">📲 Sinkronisasi ke HP Peternak</button>
+                
+                <div id="hp-layar">
+                    <p style="font-size:18px; margin:0; border-bottom:1px solid #ccc; padding-bottom:10px; text-align:center;">📱 SmartBroiler App</p>
+                    <p style="color:#059669; font-size:16px; margin:15px 0 5px 0;">Suhu: <b>28.5°C</b> (Aman)</p>
+                    <p style="color:#059669; font-size:16px; margin:5px 0 15px 0;">Amonia: <b>12 ppm</b> (Aman)</p>
+                    <button class="btn-misi" style="background:#10b981; padding:10px; font-size:14px; margin-top:10px; box-shadow:none; border:2px solid #065f46;" onclick="selesaikanMisi(1)">Klik Ini: Misi 1 Selesai! (Silakan Screenshot)</button>
+                </div>
             </div>
 
             <!-- SIMULASI 2 -->
             <div id="sim2" class="simulasi-area">
-                <button class="btn-kembali" onclick="tutupSimulasi()">⬅ Kembali</button>
-                <h3>🧠 Misi 2: Logika Otomasi (IF-THEN)</h3>
+                <button class="btn-kembali" onclick="tutupSimulasi()">⬅ Batal & Kembali ke Daftar Misi</button>
+                <h3 style="color:#6ee7b7; border-bottom:1px solid #4ade80; padding-bottom:10px;">🧠 Misi 2: Menyusun Flowchart Temptron</h3>
+                <p style="font-size: 15px; text-align:justify;">Tugas Anda: Pilih opsi di bawah ini dengan tepat. Jangan sampai salah memprogram, atau ayam kita akan mati kepanasan siang ini!</p>
+                
                 <div class="logic-container">
-                    <label><b>JIKA (IF)</b> Input Sensor:</label>
-                    <select id="logika-1" class="logic-select"><option value="">-- Pilih Input --</option><option value="salah">Pakan Habis</option><option value="benar">Suhu Kandang > 30°C</option></select>
-                    <label style="display:block; margin-top:15px;"><b>MAKA (THEN)</b> Tindakan Panel:</label>
-                    <select id="logika-2" class="logic-select"><option value="">-- Pilih Output --</option><option value="salah">Buka Tempat Pakan</option><option value="benar">Nyalakan Kipas Exhaust Maksimal</option></select>
-                    <button class="btn-misi" style="margin-top:20px; background:#3b82f6;" onclick="ujiLogika()">⚙️ Uji Program ke Alat</button>
-                    <p id="hasil-logika" style="text-align:center; font-weight:bold; margin-top:10px;"></p>
+                    <label><b>Blok [JIKA] / [IF] - Pilih Pemicu (Input):</b></label>
+                    <select id="logika-1" class="logic-select">
+                        <option value="">-- Pilih Kondisi Lingkungan --</option>
+                        <option value="salah1">JIKA Stok Pakan Habis di Silo</option>
+                        <option value="benar">JIKA Suhu Kandang > 30°C (Panas)</option>
+                        <option value="salah2">JIKA Sensor Mencium Bau Amonia Rendah</option>
+                    </select>
+
+                    <label style="display:block; margin-top:10px;"><b>Blok [MAKA] / [THEN] - Pilih Tindakan (Output):</b></label>
+                    <select id="logika-2" class="logic-select">
+                        <option value="">-- Pilih Tindakan Mesin --</option>
+                        <option value="salah1">MAKA Nyalakan Pemanas Gas (Brooder)</option>
+                        <option value="benar">MAKA Nyalakan Exhaust Fan Maksimal 50Hz</option>
+                        <option value="salah2">MAKA Bunyikan Sirine Kebakaran</option>
+                    </select>
+
+                    <button class="btn-misi" style="margin-top:20px; background:#2563eb; font-size:18px;" onclick="ujiLogika()">⚙️ Compile & Uji Program</button>
+                    <div id="hasil-logika" style="text-align:center; font-weight:bold; margin-top:15px; font-size:16px; padding:10px; border-radius:8px;"></div>
                 </div>
             </div>
 
             <!-- SIMULASI 3 -->
             <div id="sim3" class="simulasi-area">
-                <button class="btn-kembali" onclick="tutupSimulasi()">⬅ Kembali</button>
-                <h3>📈 Misi 3: Detektif Anomali Data</h3>
+                <button class="btn-kembali" onclick="tutupSimulasi()">⬅ Batal & Kembali ke Daftar Misi</button>
+                <h3 style="color:#6ee7b7; border-bottom:1px solid #4ade80; padding-bottom:10px;">📈 Misi 3: Analisa Grafik Suhu Dini Hari</h3>
+                <p style="font-size: 15px;">Grafik di bawah merekam suhu malam hari. Tugas Anda: <b>Ketuk titik data berwarna merah yang berkedip</b>. Itu adalah indikasi alat pemanas mati dan suhu kandang drop fatal!</p>
+                
                 <div class="chart-container">
-                    <div style="border-bottom: 1px dashed #ccc; position:absolute; width:100%; top:25%; left:0;"></div>
-                    <div style="border-bottom: 1px dashed #ccc; position:absolute; width:100%; top:75%; left:0;"></div>
-                    <svg width="100%" height="100%" style="position:absolute; top:0; left:0;"><polyline fill="none" stroke="#047857" stroke-width="3" points="20,40 100,50 180,150 260,45 320,40"/></svg>
-                    <div class="titik-grafik" style="left:20px; top:40px;" onclick="salahTitik()"></div><div class="titik-grafik" style="left:100px; top:50px;" onclick="salahTitik()"></div>
-                    <div class="titik-grafik titik-anomali" style="left:180px; top:150px;" onclick="benarTitik()"></div>
-                    <div class="titik-grafik" style="left:260px; top:45px;" onclick="salahTitik()"></div><div class="titik-grafik" style="left:320px; top:40px;" onclick="salahTitik()"></div>
+                    <!-- Garis Batas Kritis -->
+                    <div style="border-bottom: 2px dashed #9ca3af; position:absolute; width:100%; top:20%; left:0;"> <span style="position:absolute; left:5px; top:-15px; color:#4b5563; font-size:12px; font-weight:bold;">Suhu Panas Kritis (32°C)</span></div>
+                    <div style="border-bottom: 2px dashed #9ca3af; position:absolute; width:100%; top:80%; left:0;"> <span style="position:absolute; left:5px; top:5px; color:#4b5563; font-size:12px; font-weight:bold;">Suhu Dingin Kritis (22°C)</span></div>
+                    
+                    <!-- Garis Vektor (SVG) -->
+                    <svg width="100%" height="100%" style="position:absolute; top:0; left:0;">
+                        <polyline fill="none" stroke="#047857" stroke-width="4" points="30,80 120,90 200,180 280,85 360,75" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+
+                    <!-- Titik-titik Pengecoh -->
+                    <div class="titik-grafik" style="left:30px; top:80px;" onclick="salahTitik()"></div>
+                    <div class="titik-grafik" style="left:120px; top:90px;" onclick="salahTitik()"></div>
+                    
+                    <!-- Titik Benar (Anomali Drop) -->
+                    <div class="titik-grafik titik-anomali" style="left:200px; top:180px;" onclick="benarTitik()"></div>
+                    
+                    <!-- Titik Pengecoh Lanjutan -->
+                    <div class="titik-grafik" style="left:280px; top:85px;" onclick="salahTitik()"></div>
+                    <div class="titik-grafik" style="left:360px; top:75px;" onclick="salahTitik()"></div>
+
+                    <!-- Label Sumbu X (Jam) -->
+                    <span style="position:absolute; bottom:5px; left:20px; font-size:11px; color:#111827; font-weight:bold; background:rgba(255,255,255,0.7); padding:2px 5px; border-radius:3px;">18:00</span>
+                    <span style="position:absolute; bottom:5px; left:185px; font-size:11px; color:#111827; font-weight:bold; background:rgba(255,255,255,0.7); padding:2px 5px; border-radius:3px;">02:00</span>
+                    <span style="position:absolute; bottom:5px; right:20px; font-size:11px; color:#111827; font-weight:bold; background:rgba(255,255,255,0.7); padding:2px 5px; border-radius:3px;">06:00</span>
                 </div>
-                <p id="pesan-grafik" style="color:yellow; font-size:12px; margin-top:10px;">Ketuk titik merah yang berkedip!</p>
+                <div id="pesan-grafik" style="background:#4b5563; padding:10px; margin-top:15px; border-radius:5px; font-size:15px; font-weight:bold; border-left:5px solid #f59e0b;">Status: Menganalisa grafik. Awas anak ayam kedinginan! Temukan jamnya!</div>
             </div>
         </div>
 
-        <!-- MENU TUGAS (Telah diubah menjadi 3 Upload Screenshot) -->
+        <!-- MENU TUGAS (Pengumpulan 3 Bukti SS, Audio & Selfie) -->
         <div id="tugas" class="content-section">
-            <h2 style="text-align: center; color: var(--primary);">📝 Pengumpulan Tugas</h2>
+            <h2 style="text-align: center; color: var(--primary); margin-top:0;">📝 Evaluasi & Pengumpulan</h2>
+            <p style="text-align: center; font-size:14px; margin-bottom: 25px; color:gray;">Pastikan 5 instrumen di bawah ini terisi penuh agar tombol "Kirim Tugas" bisa di-klik. Ini adalah portofolio kelas X AT Anda.</p>
+            
             <form id="formTugas">
                 
-                <div class="form-group" style="border:none;">
-                    <label>Data Murid:</label>
-                    <select id="kelas" onchange="filterNama()" required disabled style="margin-bottom:10px;"><option value="">-- Sedang memuat kelas... --</option></select>
-                    <select id="nama" onchange="cekSemuaIsian()" required disabled><option value="">-- Pilih Kelas Terlebih Dahulu --</option></select>
+                <div class="form-group" style="background: #f8fafc; padding:15px; border-radius:8px; border:1px solid #cbd5e1;">
+                    <label style="color:#0f172a; border-bottom:2px solid #cbd5e1; padding-bottom:5px; display:inline-block;">A. Identitas Murid</label>
+                    <p style="font-size:13px; color:#64748b; margin-top:0;">Database otomatis memuat daftar murid Kelas X AT dari sistem Server Google.</p>
+                    
+                    <select id="kelas" onchange="filterNama()" required disabled style="margin-bottom:15px; font-weight:bold; border-color:#94a3b8;">
+                        <option value="">-- Sedang memuat kelas dari Server... --</option>
+                    </select>
+                    
+                    <select id="nama" onchange="cekSemuaIsian()" required disabled style="font-weight:bold; border-color:#94a3b8;">
+                        <option value="">-- Anda Wajib Memilih Kelas Dulu --</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
-                    <label>1. Bukti Screenshot Simulasi</label>
+                    <label>B. Bukti 3 Screenshoot Simulasi (Virtual Lab)</label>
+                    <p style="font-size:13px; color:#64748b; margin-top:0;">Pastikan hasil SS (tangkapan layar) jelas menunjukkan keterangan Misi Selesai.</p>
+                    
                     <div class="file-upload-wrapper">
-                        <span>Pilih SS Misi 1 (Instalasi)</span>
+                        <span>📸 Klik di sini untuk Pilih/Upload SS Misi 1 (Instalasi IoT)</span>
                         <input type="file" id="ss1" accept="image/*" onchange="updateStatus('ss1', 'statusSS1')" required>
-                        <div id="statusSS1" class="file-status">Belum ada file</div>
+                        <div id="statusSS1" class="file-status">⚠️ Belum ada file SS Misi 1</div>
                     </div>
+                    
                     <div class="file-upload-wrapper">
-                        <span>Pilih SS Misi 2 (Logika)</span>
+                        <span>📸 Klik di sini untuk Pilih/Upload SS Misi 2 (Logika IF-THEN)</span>
                         <input type="file" id="ss2" accept="image/*" onchange="updateStatus('ss2', 'statusSS2')" required>
-                        <div id="statusSS2" class="file-status">Belum ada file</div>
+                        <div id="statusSS2" class="file-status">⚠️ Belum ada file SS Misi 2</div>
                     </div>
+                    
                     <div class="file-upload-wrapper">
-                        <span>Pilih SS Misi 3 (Grafik)</span>
+                        <span>📸 Klik di sini untuk Pilih/Upload SS Misi 3 (Grafik Anomali)</span>
                         <input type="file" id="ss3" accept="image/*" onchange="updateStatus('ss3', 'statusSS3')" required>
-                        <div id="statusSS3" class="file-status">Belum ada file</div>
+                        <div id="statusSS3" class="file-status">⚠️ Belum ada file SS Misi 3</div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>2. Rekam Penjelasan 3 Misi Tersebut</label>
-                    <div class="file-upload-wrapper">
-                        <span>🎙️ Ketuk untuk Merekam Suara</span>
+                    <label>C. Tugas Audio: Menjadi Pemateri!</label>
+                    <p style="font-size:13px; color:#64748b; margin-top:0;">Rekam suara Anda (1-2 menit). Jelaskan pemahaman Anda: Kenapa kita butuh sensor, kenapa butuh logika Temptron, dan kenapa penting baca grafik?</p>
+                    <div class="file-upload-wrapper" style="border-color:#3b82f6; background:#eff6ff;">
+                        <span style="color:#1d4ed8;">🎙️ Ketuk di Sini untuk Mulai Merekam Suara (Mic HP)</span>
+                        <!-- Menggunakan capture=microphone agar langsung memanggil aplikasi recorder bawaan HP murid -->
                         <input type="file" id="audioFile" accept="audio/*" capture="microphone" onchange="updateStatus('audioFile', 'statusAudio')" required>
-                        <div id="statusAudio" class="file-status">Belum ada file</div>
+                        <div id="statusAudio" class="file-status" style="color:#1e40af;">⚠️ Rekaman belum diambil</div>
                     </div>
                 </div>
 
-                <div class="form-group" style="border:none;">
-                    <label>3. Selfie dengan Catatan Materi</label>
-                    <div class="file-upload-wrapper">
-                        <span>📸 Ketuk Buka Kamera Depan</span>
+                <div class="form-group">
+                    <label>D. Bukti Kehadiran & Catatan (Autentikasi Selfie)</label>
+                    <p style="font-size:13px; color:#64748b; margin-top:0;">Buka buku catatan/modul Agribisnis Anda. Pegang sejajar dada, lalu *Selfie*. Sistem akan otomatis mengunci dan membuka *Kamera Depan* Anda.</p>
+                    <div class="file-upload-wrapper" style="border-color:#8b5cf6; background:#f5f3ff;">
+                        <span style="color:#6d28d9;">🤳 Ketuk di Sini untuk Membuka Kamera Depan Anda</span>
+                        <!-- Menggunakan capture=user agar memblokir galeri dan memaksa murid berfoto langsung dari kamera depan HP saat itu juga -->
                         <input type="file" id="selfieFile" accept="image/*" capture="user" onchange="updateStatus('selfieFile', 'statusSelfie')" required>
-                        <div id="statusSelfie" class="file-status">Belum ada file</div>
+                        <div id="statusSelfie" class="file-status" style="color:#5b21b6;">⚠️ Foto Selfie belum diambil</div>
                     </div>
                 </div>
 
-                <button type="button" id="btnSubmit" onclick="kirimData()" disabled>Kirim Tugas (Lengkapi Semua Isian)</button>
+                <!-- Tombol Submit (Secara default terkunci / disabled) -->
+                <button type="button" id="btnSubmit" onclick="kirimData()" disabled>Terkunci: Lengkapi 5 File & Nama Dahulu!</button>
             </form>
         </div>
     </div>
 
-    <!-- Navigasi Bawah -->
+    <!-- Navigasi Bawah Sticky -->
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchMenu('materi', this)">📚 Materi</div>
-        <div class="nav-item" onclick="switchMenu('simulasi', this)">🎮 Simulasi</div>
-        <div class="nav-item" onclick="switchMenu('tugas', this)">📝 Tugas</div>
+        <div class="nav-item active" onclick="switchMenu('materi', this)">📚 Modul Teori</div>
+        <div class="nav-item" onclick="switchMenu('simulasi', this)">🎮 Virtual Lab</div>
+        <div class="nav-item" onclick="switchMenu('tugas', this)">📝 Evaluasi</div>
     </div>
 
+    <!-- JAVASCRIPT LOGIC UNTUK WEB APP -->
     <script>
+        // MASUKKAN URL WEB APP GOOGLE APPS SCRIPT BAPAK FAJAR DI SINI
         const scriptURL = 'https://script.google.com/macros/s/AKfycbyDpv032amajP8RQilgWe3mnvSPww70-xaQSM86Jk5oUvF_Ex3ct4QMelW0O0H1QwcV/exec';
 
+        // --- SISTEM MENU NAVIGASI (SINGLE PAGE APPLICATION) ---
         function switchMenu(menuId, el) {
-            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            // Sembunyikan semua konten section
+            document.querySelectorAll('.content-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+            // Hilangkan warna aktif pada semua tombol navigasi bawah
+            document.querySelectorAll('.nav-item').forEach(nav => {
+                nav.classList.remove('active');
+            });
+            // Tampilkan section yang dituju dan warnai tombolnya
             document.getElementById(menuId).classList.add('active');
             el.classList.add('active');
+            
+            // Gulung layar kembali ke paling atas
             window.scrollTo(0, 0);
         }
 
-        // SIMULASI
-        function bukaSimulasi(id) { document.getElementById('misi-list').style.display = 'none'; document.getElementById(id).style.display = 'block'; }
-        function tutupSimulasi() { document.querySelectorAll('.simulasi-area').forEach(sec => sec.style.display = 'none'); document.getElementById('misi-list').style.display = 'block'; }
+        // --- SISTEM GAME / SIMULASI VIRTUAL LAB ---
+        function bukaSimulasi(id) { 
+            document.getElementById('misi-list').style.display = 'none'; 
+            document.getElementById(id).style.display = 'block'; 
+        }
+        
+        function tutupSimulasi() { 
+            document.querySelectorAll('.simulasi-area').forEach(sec => sec.style.display = 'none'); 
+            document.getElementById('misi-list').style.display = 'block'; 
+        }
+        
         function selesaikanMisi(nomor) {
-            alert('Hebat! Misi ' + nomor + ' Selesai. Silakan ambil Screenshot!');
+            alert('KERJA BAGUS! Misi Ke-' + nomor + ' Berhasil diselesaikan. Silakan screenshot layar ini sekarang!');
             let btn = document.getElementById('btn-misi-' + nomor);
-            btn.innerHTML = '✅ Misi ' + nomor + ' Selesai';
+            btn.innerHTML = '✅ MISI ' + nomor + ' TELAH SELESAI';
             btn.classList.add('done');
         }
 
-        let sensorSuhu = false; let sensorAmonia = false;
-        function pasangSensor(tipe) {
-            if(tipe === 'suhu') { document.getElementById('btn-pasang-suhu').style.display = 'none'; document.getElementById('sensor-suhu-in').style.display = 'block'; sensorSuhu = true; } 
-            else { document.getElementById('btn-pasang-amonia').style.display = 'none'; document.getElementById('sensor-amonia-in').style.display = 'block'; sensorAmonia = true; }
-            if(sensorSuhu && sensorAmonia) { document.getElementById('kandang-v').style.borderColor = "#10b981"; document.getElementById('btn-hubungkan').style.display = 'block'; }
-        }
-        function hubungkanHP() { document.getElementById('btn-hubungkan').style.display = 'none'; document.getElementById('hp-layar').style.display = 'block'; }
+        // Logika Misi 1 (Instalasi Hardware IoT)
+        let sensorSuhu = false; 
+        let sensorAmonia = false;
         
+        function pasangSensor(tipe) {
+            if(tipe === 'suhu') { 
+                document.getElementById('btn-pasang-suhu').style.display = 'none'; 
+                document.getElementById('sensor-suhu-in').style.display = 'block'; 
+                sensorSuhu = true; 
+            } else { 
+                document.getElementById('btn-pasang-amonia').style.display = 'none'; 
+                document.getElementById('sensor-amonia-in').style.display = 'block'; 
+                sensorAmonia = true; 
+            }
+            
+            if(sensorSuhu && sensorAmonia) { 
+                document.getElementById('teks-tunggu-sensor').style.display = 'none';
+                document.getElementById('kandang-v').style.borderColor = "#10b981"; 
+                document.getElementById('btn-hubungkan').style.display = 'block'; 
+            }
+        }
+        
+        function hubungkanHP() { 
+            document.getElementById('btn-hubungkan').style.display = 'none'; 
+            document.getElementById('hp-layar').style.display = 'block'; 
+        }
+        
+        // Logika Misi 2 (Pemrograman Flowchart IF-THEN)
         function ujiLogika() {
-            const v1 = document.getElementById('logika-1').value; const v2 = document.getElementById('logika-2').value; const pesan = document.getElementById('hasil-logika');
-            if(v1 === "" || v2 === "") { pesan.innerHTML = "Lengkapi pilihan dahulu!"; pesan.style.color = "yellow"; } 
-            else if(v1 === "benar" && v2 === "benar") { pesan.innerHTML = "✅ Tepat Sekali! Mikrokontroler berhasil diprogram. (Silakan Screenshot)"; pesan.style.color = "#4ade80"; setTimeout(() => selesaikanMisi(2), 2000); } 
-            else { pesan.innerHTML = "❌ Logika salah. Coba lagi!"; pesan.style.color = "#ef4444"; }
+            const valInput = document.getElementById('logika-1').value; 
+            const valOutput = document.getElementById('logika-2').value; 
+            const divPesan = document.getElementById('hasil-logika');
+            
+            if(valInput === "" || valOutput === "") { 
+                divPesan.innerHTML = "⚠️ Anda harus melengkapi Kotak JIKA dan Kotak MAKA terlebih dahulu!"; 
+                divPesan.style.background = "#fef08a";
+                divPesan.style.color = "#854d0e"; 
+            } 
+            else if(valInput === "benar" && valOutput === "benar") { 
+                divPesan.innerHTML = "✅ TEPAT SEKALI! Anda seorang teknisi yang handal. Program berhasil di-compile ke mikrokontroler. (Silakan Screenshot Layar Ini Sekarang)"; 
+                divPesan.style.background = "#d1fae5";
+                divPesan.style.color = "#065f46"; 
+                setTimeout(() => selesaikanMisi(2), 2000); 
+            } 
+            else { 
+                divPesan.innerHTML = "❌ LOGIKA FATAL! Ayam mati karena instruksi Anda salah. JIKA cuaca kepanasan, maka tugas kipas adalah membuang suhu panas. Coba perbaiki!"; 
+                divPesan.style.background = "#fee2e2";
+                divPesan.style.color = "#991b1b"; 
+            }
         }
 
-        function salahTitik() { document.getElementById('pesan-grafik').innerHTML = "❌ Salah! Cari penurunan tajam berkedip merah!"; document.getElementById('pesan-grafik').style.color = "#ef4444"; }
-        function benarTitik() { document.getElementById('pesan-grafik').innerHTML = "✅ Benar! Suhu drop ekstrem. (Silakan Screenshot)"; document.getElementById('pesan-grafik').style.color = "#4ade80"; setTimeout(() => selesaikanMisi(3), 2000); }
+        // Logika Misi 3 (Pembacaan Grafik Visual)
+        function salahTitik() { 
+            const pesanGraf = document.getElementById('pesan-grafik');
+            pesanGraf.innerHTML = "❌ ANALISIS SALAH! Suhu di titik ini wajar. Cari titik kejanggalan ekstrem yang berkedip merah (drop tajam)."; 
+            pesanGraf.style.background = "#fee2e2";
+            pesanGraf.style.color = "#991b1b"; 
+            pesanGraf.style.borderLeftColor = "#ef4444";
+        }
+        
+        function benarTitik() { 
+            const pesanGraf = document.getElementById('pesan-grafik');
+            pesanGraf.innerHTML = "✅ BINGO! ANDA JENIUS! Suhu drop ke 22°C pada jam 02:00 pagi. Segera perbaiki pemanas! (Silakan Screenshot Layar Ini)"; 
+            pesanGraf.style.background = "#d1fae5";
+            pesanGraf.style.color = "#065f46"; 
+            pesanGraf.style.borderLeftColor = "#10b981";
+            setTimeout(() => selesaikanMisi(3), 2000); 
+        }
 
-        // BACKEND & FORM
+        // --- SISTEM BACKEND DATABASE (API FETCH) ---
         let dataDatabaseGlobal = [];
+        
+        // Fungsi ini akan berjalan otomatis begitu web/aplikasi dibuka (on load)
         window.onload = function() {
+            // Melakukan pemanggilan (GET) ke Google Apps Script untuk mendownload daftar kelas dan nama murid
             fetch(scriptURL).then(response => response.json()).then(res => {
                 if(res.status === "success") {
-                    dataDatabaseGlobal = res.data; document.getElementById('statusLoading').innerText = "Database Siap";
-                    const selectKelas = document.getElementById('kelas'); selectKelas.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+                    dataDatabaseGlobal = res.data; 
+                    
+                    document.getElementById('statusLoading').innerText = "✅ Berhasil! Terhubung ke Server DB Bapak Guru.";
+                    document.getElementById('statusLoading').style.color = "#a7f3d0";
+                    
+                    const dropdownKelas = document.getElementById('kelas'); 
+                    dropdownKelas.innerHTML = '<option value="">-- Ketuk & Pilih Kelas Anda --</option>';
+                    
+                    // Mencari daftar kelas unik dari database (agar tidak berulang)
                     const kelasUnik = [...new Set(dataDatabaseGlobal.map(item => item.kelas))];
-                    kelasUnik.forEach(k => { let option = document.createElement('option'); option.value = k; option.text = k; selectKelas.appendChild(option); });
-                    selectKelas.disabled = false;
+                    
+                    kelasUnik.forEach(k => { 
+                        let opsi = document.createElement('option'); 
+                        opsi.value = k; 
+                        opsi.text = k; 
+                        dropdownKelas.appendChild(opsi); 
+                    });
+                    
+                    dropdownKelas.disabled = false;
                 }
-            }).catch(error => { document.getElementById('statusLoading').innerText = "Gagal memuat database"; });
+            }).catch(error => { 
+                document.getElementById('statusLoading').innerText = "❌ Gangguan Koneksi! Gagal memuat DB Server."; 
+                document.getElementById('statusLoading').style.color = "#fca5a5";
+            });
         };
 
+        // Fungsi ini berjalan ketika murid memilih Kelas (Trigger onChange di dropdown Kelas)
         function filterNama() {
-            const kelasDipilih = document.getElementById('kelas').value; const selectNama = document.getElementById('nama');
-            selectNama.innerHTML = '<option value="">-- Pilih Nama Murid --</option>';
-            if(kelasDipilih !== "") {
-                const muridTersaring = dataDatabaseGlobal.filter(item => item.kelas === kelasDipilih);
-                muridTersaring.forEach(m => { let option = document.createElement('option'); option.value = m.nama; option.text = m.nama; selectNama.appendChild(option); });
-                selectNama.disabled = false;
-            } else { selectNama.disabled = true; }
+            const kelasYangDipilih = document.getElementById('kelas').value; 
+            const dropdownNama = document.getElementById('nama');
+            
+            // Reset dropdown nama menjadi default
+            dropdownNama.innerHTML = '<option value="">-- Pilih Nama Lengkap Anda --</option>';
+            
+            if(kelasYangDipilih !== "") {
+                // Menyaring daftar murid (Array Filter) agar nama yang muncul khusus anak kelas terpilih saja
+                const muridTersaring = dataDatabaseGlobal.filter(item => item.kelas === kelasYangDipilih);
+                muridTersaring.forEach(m => { 
+                    let opsi = document.createElement('option'); 
+                    opsi.value = m.nama; 
+                    opsi.text = m.nama; 
+                    dropdownNama.appendChild(opsi); 
+                });
+                dropdownNama.disabled = false;
+            } else { 
+                dropdownNama.disabled = true; 
+            }
+            
+            // Periksa ulang tombol Submit
             cekSemuaIsian();
         }
 
-        // Penampung 5 file Base64
+        // --- SISTEM KONVERSI & PENGIRIMAN FILE BASE64 ---
+        
+        // Lima variabel global penampung rentetan teks gambar/audio (Base64)
         let b64ss1 = "", b64ss2 = "", b64ss3 = "", b64audio = "", b64selfie = "";
 
+        // Fungsi mesin pembaca file dari perangkat HP ke dalam teks (DataURL/Base64)
         function fileToBase64(file, callback) {
-            const reader = new FileReader(); reader.onload = () => callback(reader.result); reader.readAsDataURL(file);
+            const reader = new FileReader(); 
+            reader.onload = () => callback(reader.result); 
+            reader.readAsDataURL(file);
         }
 
+        // Fungsi yang dipicu setiap kali murid selesai memilih file dari HP nya
         function updateStatus(inputId, statusId) {
-            const fileInput = document.getElementById(inputId); const statusDiv = document.getElementById(statusId);
-            if (fileInput.files.length > 0) {
-                const file = fileInput.files[0]; statusDiv.innerHTML = "✅ Terekam: " + file.name;
+            const inputElemen = document.getElementById(inputId); 
+            const divStatus = document.getElementById(statusId);
+            
+            // Validasi apakah user benar-benar memilih file
+            if (inputElemen.files.length > 0) {
+                const fileDipilih = inputElemen.files[0]; 
                 
-                if(inputId === 'ss1') fileToBase64(file, res => b64ss1 = res);
-                if(inputId === 'ss2') fileToBase64(file, res => b64ss2 = res);
-                if(inputId === 'ss3') fileToBase64(file, res => b64ss3 = res);
-                if(inputId === 'audioFile') fileToBase64(file, res => b64audio = res);
-                if(inputId === 'selfieFile') fileToBase64(file, res => b64selfie = res);
+                // Pembatasan ukuran file kasar (opsional, Google Sheet/Drive sanggup hingga 50MB per eksekusi, 
+                // tapi internet murid bisa lambat. File Base64 sangat bengkak ukurannya.)
+                const ukuranMB = fileDipilih.size / (1024*1024);
+                if(ukuranMB > 15) {
+                    alert("Peringatan: Ukuran file Anda " + ukuranMB.toFixed(2) + " MB. Ini terlalu besar dan berisiko gagal terkirim (Pasti Timeout). Mohon kecilkan resolusi kamera/audio Anda.");
+                }
+                
+                divStatus.innerHTML = "✅ SUCCESS Tersimpan di memori HP: <br>" + fileDipilih.name;
+                divStatus.style.color = "#059669";
+                
+                // Eksekusi Konversi Base64 untuk masing-masing id
+                if(inputId === 'ss1') fileToBase64(fileDipilih, res => b64ss1 = res);
+                if(inputId === 'ss2') fileToBase64(fileDipilih, res => b64ss2 = res);
+                if(inputId === 'ss3') fileToBase64(fileDipilih, res => b64ss3 = res);
+                if(inputId === 'audioFile') fileToBase64(fileDipilih, res => b64audio = res);
+                if(inputId === 'selfieFile') fileToBase64(fileDipilih, res => b64selfie = res);
+            } else {
+                divStatus.innerHTML = "⚠️ Anda membatalkan pemilihan file!";
+                divStatus.style.color = "#dc2626";
             }
+            
+            // Setiap ada update file, periksa status tombol Submit
             cekSemuaIsian();
         }
 
+        // Fungsi Pengunci (Validasi Kelengkapan Formulir)
         function cekSemuaIsian() {
-            const nama = document.getElementById('nama').value; const kelas = document.getElementById('kelas').value;
-            const s1 = document.getElementById('ss1').files.length > 0;
-            const s2 = document.getElementById('ss2').files.length > 0;
-            const s3 = document.getElementById('ss3').files.length > 0;
-            const aud = document.getElementById('audioFile').files.length > 0;
-            const sel = document.getElementById('selfieFile').files.length > 0;
-            const btn = document.getElementById('btnSubmit');
+            const formNama = document.getElementById('nama').value; 
+            const formKelas = document.getElementById('kelas').value;
+            
+            const jumSS1 = document.getElementById('ss1').files.length > 0;
+            const jumSS2 = document.getElementById('ss2').files.length > 0;
+            const jumSS3 = document.getElementById('ss3').files.length > 0;
+            const jumAud = document.getElementById('audioFile').files.length > 0;
+            const jumSel = document.getElementById('selfieFile').files.length > 0;
+            
+            const tombolSubmit = document.getElementById('btnSubmit');
 
-            if (nama && kelas && s1 && s2 && s3 && aud && sel) {
-                btn.disabled = false; btn.innerHTML = "🚀 Kirim Tugas Sekarang";
+            // Cek kondisi absolut: Harus ada semua baru terbuka
+            if (formNama && formKelas && jumSS1 && jumSS2 && jumSS3 && jumAud && jumSel) {
+                tombolSubmit.disabled = false; 
+                tombolSubmit.innerHTML = "🚀 SEMUA LENGKAP - KIRIM TUGAS SEKARANG";
+                tombolSubmit.style.background = "#16a34a"; // Hijau terang
             } else {
-                btn.disabled = true; btn.innerHTML = "Kirim Tugas (Lengkapi Semua Isian)";
+                tombolSubmit.disabled = true; 
+                tombolSubmit.innerHTML = "Terkunci: Lengkapi 5 File & Nama Dahulu!";
+                tombolSubmit.style.background = "#9ca3af"; // Abu-abu
             }
         }
 
+        // Fungsi Inti (POST data JSON ke Google Apps Script)
         function kirimData() {
-            const btn = document.getElementById('btnSubmit');
-            btn.disabled = true; btn.innerHTML = "⏳ Sedang mengunggah 5 file... Jangan tutup layar!";
+            const tombolSubmit = document.getElementById('btnSubmit');
+            
+            // 1. Kunci tombol agar murid tidak menekan berkali-kali secara brutal (SPAM)
+            tombolSubmit.disabled = true; 
+            tombolSubmit.innerHTML = "⏳ MENGUNGGAH KE SERVER DRIVE... (MOHON JANGAN TUTUP LAYAR INI!)";
+            tombolSubmit.style.background = "#ca8a04"; // Kuning peringatan
 
-            const payload = { 
+            // 2. Susun barang/paket (Payload) JSON
+            const payloadPaket = { 
                 nama: document.getElementById('nama').value, 
                 kelas: document.getElementById('kelas').value, 
-                ss1: b64ss1, ss2: b64ss2, ss3: b64ss3, 
-                audio: b64audio, selfie: b64selfie 
+                ss1: b64ss1, 
+                ss2: b64ss2, 
+                ss3: b64ss3, 
+                audio: b64audio, 
+                selfie: b64selfie 
             };
 
-            fetch(scriptURL, { method: 'POST', body: JSON.stringify(payload) })
-            .then(response => response.json())
-            .then(data => {
-                if(data.status === "success") {
-                    alert("Berhasil! Semua tugas telah masuk ke Google Drive & Excel Bapak Guru.");
-                    document.getElementById('formTugas').reset();
-                    document.getElementById('statusSS1').innerHTML = "Belum ada file";
-                    document.getElementById('statusSS2').innerHTML = "Belum ada file";
-                    document.getElementById('statusSS3').innerHTML = "Belum ada file";
-                    document.getElementById('statusAudio').innerHTML = "Belum ada file";
-                    document.getElementById('statusSelfie').innerHTML = "Belum ada file";
-                    filterNama(); btn.innerHTML = "Kirim Tugas (Lengkapi Semua Isian)";
-                } else { alert("Gagal mengirim: " + data.message); btn.disabled = false; btn.innerHTML = "🚀 Coba Kirim Lagi"; }
-            }).catch(error => {
-                alert("Terjadi kesalahan jaringan."); btn.disabled = false; btn.innerHTML = "🚀 Coba Kirim Lagi";
+            // 3. Panggil kurir pengirim (Fetch API) metode POST
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: JSON.stringify(payloadPaket) 
+            })
+            .then(response => response.json()) // Tunggu jawaban balasan server (doPost return)
+            .then(dataServer => {
+                
+                // 4. Analisa jawaban dari Server Google Script
+                if(dataServer.status === "success") {
+                    // Sukses! Kosongkan semua form dan reset status
+                    alert("🎉 PENGIRIMAN BERHASIL! \n\nSemua tugas 5 file Anda (SS 1-3, Audio, dan Foto Selfie) telah berhasil masuk ke Database Google Drive dan tersusun rapi di Rekap Excel Bapak Guru. \n\nSelamat, Anda anak agribisnis hebat!");
+                    
+                    document.getElementById('formTugas').reset(); // Sapu bersih isian teks
+                    
+                    // Kembalikan tulisan peringatan file menjadi kosong
+                    document.getElementById('statusSS1').innerHTML = "⚠️ Belum ada file SS Misi 1";
+                    document.getElementById('statusSS1').style.color = "#065f46";
+                    
+                    document.getElementById('statusSS2').innerHTML = "⚠️ Belum ada file SS Misi 2";
+                    document.getElementById('statusSS2').style.color = "#065f46";
+                    
+                    document.getElementById('statusSS3').innerHTML = "⚠️ Belum ada file SS Misi 3";
+                    document.getElementById('statusSS3').style.color = "#065f46";
+                    
+                    document.getElementById('statusAudio').innerHTML = "⚠️ Rekaman belum diambil";
+                    document.getElementById('statusAudio').style.color = "#1e40af";
+                    
+                    document.getElementById('statusSelfie').innerHTML = "⚠️ Foto Selfie belum diambil";
+                    document.getElementById('statusSelfie').style.color = "#5b21b6";
+                    
+                    // Reset ulang Dropdown
+                    filterNama(); 
+                    
+                    // Kembalikan tombol submit ke mode awal (Terkunci)
+                    tombolSubmit.innerHTML = "Terkunci: Lengkapi 5 File & Nama Dahulu!";
+                    tombolSubmit.style.background = "#9ca3af";
+                    
+                } else { 
+                    // Ada jawaban dari server, tapi isinya penolakan/error (misal script eror/batas kuota)
+                    alert("❌ SISTEM SERVER MENOLAK: \n\n" + dataServer.message + "\n\nIni biasanya karena koneksi putus di tengah jalan atau file terlalu raksasa. Silakan kompres (kecilkan) ukuran foto/suara Anda dan coba kirim lagi."); 
+                    tombolSubmit.disabled = false; 
+                    tombolSubmit.innerHTML = "🚀 ULANGI PENGIRIMAN (COBA LAGI)"; 
+                    tombolSubmit.style.background = "#dc2626";
+                }
+                
+            }).catch(errorJaringan => {
+                // Skenario terburuk: Internet murid mati total di tengah proses upload
+                alert("💀 ERROR KONEKSI INTERNET TERPUTUS! \n\nPaket data / WiFi Anda terputus saat proses upload menuju server sedang berlangsung. Harap cari sinyal stabil, refresh halaman, dan mohon submit ulang perlahan-lahan."); 
+                tombolSubmit.disabled = false; 
+                tombolSubmit.innerHTML = "🚀 ULANGI PENGIRIMAN (COBA LAGI)";
+                tombolSubmit.style.background = "#dc2626";
             });
         }
     </script>
