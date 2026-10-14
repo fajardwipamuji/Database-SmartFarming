@@ -536,55 +536,40 @@
 
         // --- SISTEM KONVERSI & PENGIRIMAN FILE BASE64 ---
         
-        // Lima variabel global penampung rentetan teks gambar/audio (Base64)
-        let b64ss1 = "", b64ss2 = "", b64ss3 = "", b64audio = "", b64selfie = "";
-
-        // Fungsi mesin pembaca file dari perangkat HP ke dalam teks (DataURL/Base64)
-        function fileToBase64(file, callback) {
-            const reader = new FileReader(); 
-            reader.onload = () => callback(reader.result); 
-            reader.readAsDataURL(file);
+        // Fungsi Promise pembaca file (Dijamin menunggu sampai selesai terbaca)
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                if (!file) {
+                    resolve("");
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
         }
 
-        // Fungsi yang dipicu setiap kali murid selesai memilih file dari HP nya
+        // Update indikator tampilan saat murid memilih file
         function updateStatus(inputId, statusId) {
             const inputElemen = document.getElementById(inputId); 
             const divStatus = document.getElementById(statusId);
             
-            // Validasi apakah user benar-benar memilih file
             if (inputElemen.files.length > 0) {
                 const fileDipilih = inputElemen.files[0]; 
-                
-                // Pembatasan ukuran file kasar (opsional, Google Sheet/Drive sanggup hingga 50MB per eksekusi, 
-                // tapi internet murid bisa lambat. File Base64 sangat bengkak ukurannya.)
-                const ukuranMB = fileDipilih.size / (1024*1024);
-                if(ukuranMB > 15) {
-                    alert("Peringatan: Ukuran file Anda " + ukuranMB.toFixed(2) + " MB. Ini terlalu besar dan berisiko gagal terkirim (Pasti Timeout). Mohon kecilkan resolusi kamera/audio Anda.");
-                }
-                
-                divStatus.innerHTML = "✅ SUCCESS Tersimpan di memori HP: <br>" + fileDipilih.name;
+                divStatus.innerHTML = "✅ Siap: " + fileDipilih.name;
                 divStatus.style.color = "#059669";
-                
-                // Eksekusi Konversi Base64 untuk masing-masing id
-                if(inputId === 'ss1') fileToBase64(fileDipilih, res => b64ss1 = res);
-                if(inputId === 'ss2') fileToBase64(fileDipilih, res => b64ss2 = res);
-                if(inputId === 'ss3') fileToBase64(fileDipilih, res => b64ss3 = res);
-                if(inputId === 'audioFile') fileToBase64(fileDipilih, res => b64audio = res);
-                if(inputId === 'selfieFile') fileToBase64(fileDipilih, res => b64selfie = res);
             } else {
-                divStatus.innerHTML = "⚠️ Anda membatalkan pemilihan file!";
+                divStatus.innerHTML = "⚠️ Belum ada file dipilih";
                 divStatus.style.color = "#dc2626";
             }
-            
-            // Setiap ada update file, periksa status tombol Submit
             cekSemuaIsian();
         }
 
-        // Fungsi Pengunci (Validasi Kelengkapan Formulir)
+        // Pengecekan kelengkapan form
         function cekSemuaIsian() {
             const formNama = document.getElementById('nama').value; 
             const formKelas = document.getElementById('kelas').value;
-            
             const jumSS1 = document.getElementById('ss1').files.length > 0;
             const jumSS2 = document.getElementById('ss2').files.length > 0;
             const jumSS3 = document.getElementById('ss3').files.length > 0;
@@ -593,91 +578,83 @@
             
             const tombolSubmit = document.getElementById('btnSubmit');
 
-            // Cek kondisi absolut: Harus ada semua baru terbuka
             if (formNama && formKelas && jumSS1 && jumSS2 && jumSS3 && jumAud && jumSel) {
                 tombolSubmit.disabled = false; 
                 tombolSubmit.innerHTML = "🚀 SEMUA LENGKAP - KIRIM TUGAS SEKARANG";
-                tombolSubmit.style.background = "#16a34a"; // Hijau terang
+                tombolSubmit.style.background = "#16a34a";
             } else {
                 tombolSubmit.disabled = true; 
                 tombolSubmit.innerHTML = "Terkunci: Lengkapi 5 File & Nama Dahulu!";
-                tombolSubmit.style.background = "#9ca3af"; // Abu-abu
+                tombolSubmit.style.background = "#9ca3af";
             }
         }
 
-        // Fungsi Inti (POST data JSON ke Google Apps Script)
-        function kirimData() {
+        // Pengiriman Data Asynchronous (Async/Await)
+        async function kirimData() {
             const tombolSubmit = document.getElementById('btnSubmit');
-            
-            // 1. Kunci tombol agar murid tidak menekan berkali-kali secara brutal (SPAM)
             tombolSubmit.disabled = true; 
-            tombolSubmit.innerHTML = "⏳ MENGUNGGAH KE SERVER DRIVE... (MOHON JANGAN TUTUP LAYAR INI!)";
-            tombolSubmit.style.background = "#ca8a04"; // Kuning peringatan
+            tombolSubmit.innerHTML = "⏳ Sedang memproses & mengunggah file... (Mohon tunggu)";
+            tombolSubmit.style.background = "#ca8a04";
 
-            // 2. Susun barang/paket (Payload) JSON
-            const payloadPaket = { 
-                nama: document.getElementById('nama').value, 
-                kelas: document.getElementById('kelas').value, 
-                ss1: b64ss1, 
-                ss2: b64ss2, 
-                ss3: b64ss3, 
-                audio: b64audio, 
-                selfie: b64selfie 
-            };
+            try {
+                // Konversi semua file secara bersamaan dan tunggu hingga selesai 100%
+                const fileSS1 = document.getElementById('ss1').files[0];
+                const fileSS2 = document.getElementById('ss2').files[0];
+                const fileSS3 = document.getElementById('ss3').files[0];
+                const fileAud = document.getElementById('audioFile').files[0];
+                const fileSel = document.getElementById('selfieFile').files[0];
 
-            // 3. Panggil kurir pengirim (Fetch API) metode POST
-            fetch(scriptURL, { 
-                method: 'POST', 
-                body: JSON.stringify(payloadPaket) 
-            })
-            .then(response => response.json()) // Tunggu jawaban balasan server (doPost return)
-            .then(dataServer => {
+                const [b64ss1, b64ss2, b64ss3, b64audio, b64selfie] = await Promise.all([
+                    readFileAsBase64(fileSS1),
+                    readFileAsBase64(fileSS2),
+                    readFileAsBase64(fileSS3),
+                    readFileAsBase64(fileAud),
+                    readFileAsBase64(fileSel)
+                ]);
+
+                // Susun paket payload
+                const payloadPaket = { 
+                    nama: document.getElementById('nama').value, 
+                    kelas: document.getElementById('kelas').value, 
+                    ss1: b64ss1, 
+                    ss2: b64ss2, 
+                    ss3: b64ss3, 
+                    audio: b64audio, 
+                    selfie: b64selfie 
+                };
+
+                // Kirim ke Google Apps Script
+                const response = await fetch(scriptURL, { 
+                    method: 'POST', 
+                    body: JSON.stringify(payloadPaket) 
+                });
                 
-                // 4. Analisa jawaban dari Server Google Script
-                if(dataServer.status === "success") {
-                    // Sukses! Kosongkan semua form dan reset status
-                    alert("🎉 PENGIRIMAN BERHASIL! \n\nSemua tugas 5 file Anda (SS 1-3, Audio, dan Foto Selfie) telah berhasil masuk ke Database Google Drive dan tersusun rapi di Rekap Excel Bapak Guru. \n\nSelamat, Anda anak agribisnis hebat!");
-                    
-                    document.getElementById('formTugas').reset(); // Sapu bersih isian teks
-                    
-                    // Kembalikan tulisan peringatan file menjadi kosong
+                const dataServer = await response.json();
+
+                if (dataServer.status === "success") {
+                    alert("🎉 PENGIRIMAN BERHASIL!\n\nSemua tugas dan file telah tersimpan ke Google Drive dan linknya tercatat di Spreadsheet.");
+                    document.getElementById('formTugas').reset();
                     document.getElementById('statusSS1').innerHTML = "⚠️ Belum ada file SS Misi 1";
-                    document.getElementById('statusSS1').style.color = "#065f46";
-                    
                     document.getElementById('statusSS2').innerHTML = "⚠️ Belum ada file SS Misi 2";
-                    document.getElementById('statusSS2').style.color = "#065f46";
-                    
                     document.getElementById('statusSS3').innerHTML = "⚠️ Belum ada file SS Misi 3";
-                    document.getElementById('statusSS3').style.color = "#065f46";
-                    
                     document.getElementById('statusAudio').innerHTML = "⚠️ Rekaman belum diambil";
-                    document.getElementById('statusAudio').style.color = "#1e40af";
-                    
                     document.getElementById('statusSelfie').innerHTML = "⚠️ Foto Selfie belum diambil";
-                    document.getElementById('statusSelfie').style.color = "#5b21b6";
-                    
-                    // Reset ulang Dropdown
-                    filterNama(); 
-                    
-                    // Kembalikan tombol submit ke mode awal (Terkunci)
+                    filterNama();
                     tombolSubmit.innerHTML = "Terkunci: Lengkapi 5 File & Nama Dahulu!";
                     tombolSubmit.style.background = "#9ca3af";
-                    
-                } else { 
-                    // Ada jawaban dari server, tapi isinya penolakan/error (misal script eror/batas kuota)
-                    alert("❌ SISTEM SERVER MENOLAK: \n\n" + dataServer.message + "\n\nIni biasanya karena koneksi putus di tengah jalan atau file terlalu raksasa. Silakan kompres (kecilkan) ukuran foto/suara Anda dan coba kirim lagi."); 
-                    tombolSubmit.disabled = false; 
-                    tombolSubmit.innerHTML = "🚀 ULANGI PENGIRIMAN (COBA LAGI)"; 
+                } else {
+                    alert("❌ Server menolak: " + dataServer.message);
+                    tombolSubmit.disabled = false;
+                    tombolSubmit.innerHTML = "🚀 ULANGI PENGIRIMAN";
                     tombolSubmit.style.background = "#dc2626";
                 }
-                
-            }).catch(errorJaringan => {
-                // Skenario terburuk: Internet murid mati total di tengah proses upload
-                alert("💀 ERROR KONEKSI INTERNET TERPUTUS! \n\nPaket data / WiFi Anda terputus saat proses upload menuju server sedang berlangsung. Harap cari sinyal stabil, refresh halaman, dan mohon submit ulang perlahan-lahan."); 
-                tombolSubmit.disabled = false; 
-                tombolSubmit.innerHTML = "🚀 ULANGI PENGIRIMAN (COBA LAGI)";
+
+            } catch (err) {
+                alert("Terjadi kendala saat membaca/mengirim file: " + err.message);
+                tombolSubmit.disabled = false;
+                tombolSubmit.innerHTML = "🚀 ULANGI PENGIRIMAN";
                 tombolSubmit.style.background = "#dc2626";
-            });
+            }
         }
     </script>
 </body>
