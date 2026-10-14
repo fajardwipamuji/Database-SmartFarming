@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartBroiler Edu - 10 AT3</title>
+    <style>
+        :root {
+            --primary: #047857;
+            --secondary: #d1fae5;
+            --bg: #f3f4f6;
+            --text: #1f2937;
+        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; padding-bottom: 70px; }
+        header { background-color: var(--primary); color: white; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .container { padding: 15px; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; }
+        .nav-item { text-align: center; font-size: 14px; font-weight: bold; color: gray; cursor: pointer; padding: 5px 15px; border-radius: 20px; }
+        .nav-item.active { background: var(--secondary); color: var(--primary); }
+        .content-section { display: none; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px;}
+        .content-section.active { display: block; }
+        .card { border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 15px; padding: 15px; border-left: 5px solid var(--primary); }
+        .card h3 { margin-top: 0; color: var(--primary); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 8px; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; background: #fff;}
+        .file-upload-wrapper { background: var(--secondary); border: 2px dashed var(--primary); padding: 15px; text-align: center; border-radius: 8px; position: relative; cursor: pointer; }
+        .file-upload-wrapper input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        .file-status { margin-top: 10px; font-size: 12px; color: var(--primary); font-weight: bold;}
+        button#btnSubmit { width: 100%; padding: 15px; background-color: var(--primary); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        button#btnSubmit:disabled { background-color: #9ca3af; cursor: not-allowed; }
+        .misi-box { background: #fffbeb; padding: 15px; border-radius: 8px; border: 1px solid #fde68a; margin-bottom: 15px; text-align: center;}
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2 style="margin: 0;">SmartBroiler Edu</h2>
+        <p style="margin: 5px 0 0 0; font-size: 14px;" id="statusLoading">Mengambil data murid...</p>
+    </header>
+
+    <div class="container">
+        <!-- MENU MATERI (Sama seperti sebelumnya) -->
+        <div id="materi" class="content-section active">
+            <h2>📚 Materi Pembelajaran</h2>
+            <div class="card"><h3>1. Digitalisasi & IoT</h3><p>Internet of Things (IoT) memungkinkan kandang modern terhubung ke internet. Contoh: Memantau sensor digital (Suhu DHT11 & Amonia) langsung dari layar HP peternak.</p></div>
+            <div class="card"><h3>2. Logika Otomasi (Mikrokontroler)</h3><p>Mengenal struktur pemrograman dasar <b>IF-THEN</b>. <br><i>Contoh: JIKA suhu > 30°C, MAKA kipas menyala maksimal.</i></p></div>
+            <div class="card"><h3>3. Visualisasi Data</h3><p>Membaca grafik garis suhu harian. Menganalisis grafik stabil, naik tajam, turun perlahan, serta mencari jam suhu ekstrem.</p></div>
+        </div>
+
+        <!-- MENU SIMULASI (Sama seperti sebelumnya) -->
+        <div id="simulasi" class="content-section">
+            <h2>🎮 Misi Simulasi</h2>
+            <p>Selesaikan instruksi di bawah ini, lalu <b>Screenshot layar ini</b> untuk dikumpulkan.</p>
+            <div class="misi-box"><h4>Misi 1: Instalasi Virtual</h4><p>Instal aplikasi Thermometer Room di HP Anda.</p><button onclick="alert('Misi 1 Selesai!')" style="padding:8px 15px; border-radius:5px; border:none; background:var(--primary); color:white;">Mulai Misi 1</button></div>
+            <div class="misi-box"><h4>Misi 2: Logika IF-THEN</h4><p>Susun logika perbaikan alarm kandang.</p><button onclick="alert('Misi 2 Selesai!')" style="padding:8px 15px; border-radius:5px; border:none; background:var(--primary); color:white;">Mulai Misi 2</button></div>
+            <div class="misi-box"><h4>Misi 3: Detektif Anomali</h4><p>Cari jam terjadinya suhu ekstrem semalam.</p><button onclick="alert('Misi 3 Selesai!')" style="padding:8px 15px; border-radius:5px; border:none; background:var(--primary); color:white;">Mulai Misi 3</button></div>
+        </div>
+
+        <!-- MENU TUGAS (Dengan Dropdown Dinamis) -->
+        <div id="tugas" class="content-section">
+            <h2>📝 Pengumpulan Tugas</h2>
+            <form id="formTugas">
+                
+                <div class="form-group">
+                    <label>Kelas:</label>
+                    <select id="kelas" onchange="filterNama()" required disabled>
+                        <option value="">-- Sedang memuat kelas... --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Lengkap Murid:</label>
+                    <select id="nama" onchange="cekSemuaIsian()" required disabled>
+                        <option value="">-- Pilih Kelas Terlebih Dahulu --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>1. Screenshot Hasil 3 Misi</label>
+                    <div class="file-upload-wrapper">
+                        <span>Pilih dari Galeri</span>
+                        <input type="file" id="ssFile" accept="image/*" onchange="updateStatus('ssFile', 'statusSS')" required>
+                        <div id="statusSS" class="file-status">Belum ada file</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>2. Rekam Penjelasan Misi</label>
+                    <div class="file-upload-wrapper">
+                        <span>🎙️ Ketuk untuk Merekam Suara</span>
+                        <input type="file" id="audioFile" accept="audio/*" capture="microphone" onchange="updateStatus('audioFile', 'statusAudio')" required>
+                        <div id="statusAudio" class="file-status">Belum ada file</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>3. Selfie dengan Catatan</label>
+                    <div class="file-upload-wrapper">
+                        <span>📸 Ketuk Buka Kamera Depan</span>
+                        <input type="file" id="selfieFile" accept="image/*" capture="user" onchange="updateStatus('selfieFile', 'statusSelfie')" required>
+                        <div id="statusSelfie" class="file-status">Belum ada file</div>
+                    </div>
+                </div>
+
+                <button type="button" id="btnSubmit" onclick="kirimData()" disabled>Kirim Tugas (Lengkapi Isian Dahulu)</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Navigasi Bawah -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchMenu('materi', this)">📚 Materi</div>
+        <div class="nav-item" onclick="switchMenu('simulasi', this)">🎮 Simulasi</div>
+        <div class="nav-item" onclick="switchMenu('tugas', this)">📝 Tugas</div>
+    </div>
+
+    <script>
+        // GANTI URL DI BAWAH INI DENGAN URL WEB APP YANG BARU
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzAGQKQhLDWmbL8-n3biOLqEceMy027896Xwa28iwXufaGA6sdzTsC2RtEqSyo5Odlw/exec';
+
+        let dataDatabaseGlobal = [];
+
+        // FUNGSI MENGAMBIL DATA DARI GOOGLE SHEETS SAAT HALAMAN DIBUKA
+        window.onload = function() {
+            fetch(scriptURL)
+            .then(response => response.json())
+            .then(res => {
+                if(res.status === "success") {
+                    dataDatabaseGlobal = res.data;
+                    document.getElementById('statusLoading').innerText = "Siap digunakan";
+                    
+                    const selectKelas = document.getElementById('kelas');
+                    selectKelas.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+                    
+                    // Ambil daftar kelas yang unik dari data
+                    const kelasUnik = [...new Set(dataDatabaseGlobal.map(item => item.kelas))];
+                    
+                    kelasUnik.forEach(k => {
+                        let option = document.createElement('option');
+                        option.value = k;
+                        option.text = k;
+                        selectKelas.appendChild(option);
+                    });
+                    
+                    selectKelas.disabled = false;
+                }
+            })
+            .catch(error => {
+                document.getElementById('statusLoading').innerText = "Gagal memuat data database";
+                console.error(error);
+            });
+        };
+
+        // FUNGSI MEMFILTER NAMA BERDASARKAN KELAS YANG DIPILIH
+        function filterNama() {
+            const kelasDipilih = document.getElementById('kelas').value;
+            const selectNama = document.getElementById('nama');
+            
+            selectNama.innerHTML = '<option value="">-- Pilih Nama Murid --</option>';
+            
+            if(kelasDipilih !== "") {
+                const muridTersaring = dataDatabaseGlobal.filter(item => item.kelas === kelasDipilih);
+                muridTersaring.forEach(m => {
+                    let option = document.createElement('option');
+                    option.value = m.nama;
+                    option.text = m.nama;
+                    selectNama.appendChild(option);
+                });
+                selectNama.disabled = false;
+            } else {
+                selectNama.disabled = true;
+            }
+            cekSemuaIsian();
+        }
+
+        function switchMenu(menuId, el) {
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            document.getElementById(menuId).classList.add('active');
+            el.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        let base64SS = "", base64Audio = "", base64Selfie = "";
+
+        function fileToBase64(file, callback) {
+            const reader = new FileReader();
+            reader.onload = () => callback(reader.result);
+            reader.readAsDataURL(file);
+        }
+
+        function updateStatus(inputId, statusId) {
+            const fileInput = document.getElementById(inputId);
+            const statusDiv = document.getElementById(statusId);
+            
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                statusDiv.innerHTML = "✅ " + file.name;
+                
+                if(inputId === 'ssFile') fileToBase64(file, res => base64SS = res);
+                if(inputId === 'audioFile') fileToBase64(file, res => base64Audio = res);
+                if(inputId === 'selfieFile') fileToBase64(file, res => base64Selfie = res);
+            }
+            cekSemuaIsian();
+        }
+
+        function cekSemuaIsian() {
+            const nama = document.getElementById('nama').value;
+            const kelas = document.getElementById('kelas').value;
+            const ss = document.getElementById('ssFile').files.length > 0;
+            const audio = document.getElementById('audioFile').files.length > 0;
+            const selfie = document.getElementById('selfieFile').files.length > 0;
+            const btn = document.getElementById('btnSubmit');
+
+            if (nama && kelas && ss && audio && selfie) {
+                btn.disabled = false;
+                btn.innerHTML = "🚀 Kirim Tugas Sekarang";
+            } else {
+                btn.disabled = true;
+                btn.innerHTML = "Kirim Tugas (Lengkapi Isian Dahulu)";
+            }
+        }
+
+        function kirimData() {
+            const nama = document.getElementById('nama').value;
+            const kelas = document.getElementById('kelas').value;
+            const btn = document.getElementById('btnSubmit');
+            
+            btn.disabled = true;
+            btn.innerHTML = "⏳ Mengirim data... (Jangan tutup layar)";
+
+            const payload = { nama: nama, kelas: kelas, screenshot: base64SS, audio: base64Audio, selfie: base64Selfie };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === "success") {
+                    alert("Berhasil! Tugas tersimpan di Database.");
+                    document.getElementById('formTugas').reset();
+                    document.getElementById('statusSS').innerHTML = "Belum ada file";
+                    document.getElementById('statusAudio').innerHTML = "Belum ada file";
+                    document.getElementById('statusSelfie').innerHTML = "Belum ada file";
+                    filterNama(); // Reset dropdown nama
+                    btn.innerHTML = "Kirim Tugas (Lengkapi Isian Dahulu)";
+                } else {
+                    alert("Gagal mengirim: " + data.message);
+                    btn.disabled = false;
+                    btn.innerHTML = "🚀 Coba Kirim Lagi";
+                }
+            })
+            .catch(error => {
+                alert("Terjadi kesalahan jaringan.");
+                btn.disabled = false;
+                btn.innerHTML = "🚀 Coba Kirim Lagi";
+            });
+        }
+    </script>
+</body>
+</html>
